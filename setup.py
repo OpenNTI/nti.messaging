@@ -60,7 +60,7 @@ setup(
         'nti.threadable',
         'ZODB'
         'zope.annotation',
-        'zope.cachedescriptor',
+        'zope.cachedescriptors',
         'zope.component',
         'zope.container',
         'zope.intid',
