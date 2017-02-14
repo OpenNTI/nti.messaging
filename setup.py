@@ -50,7 +50,6 @@ setup(
         'nti.base',
         'nti.containers',
         'nti.coremetadata',
-        'nti.dataserver' # temp
         'nti.dublincore',
         'nti.externalization',
         'nti.mimetype',
@@ -58,7 +57,7 @@ setup(
         'nti.property',
         'nti.schema',
         'nti.zope_catalog',
-        # 'nti.threadable',
+        'nti.threadable',
         'ZODB'
         'zope.annotation',
         'zope.cachedescriptor',
