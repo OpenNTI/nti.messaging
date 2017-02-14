@@ -58,7 +58,7 @@ setup(
         'nti.schema',
         'nti.zope_catalog',
         'nti.threadable',
-        'ZODB'
+        'ZODB',
         'zope.annotation',
         'zope.cachedescriptors',
         'zope.component',
