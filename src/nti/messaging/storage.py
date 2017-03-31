@@ -9,32 +9,31 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-import time
-
 from zope import interface
 from zope import lifecycleevent
 
 from zope.cachedescriptors.property import readproperty
 
-from zope.container.btree import BTreeContainer
-
 from zope.container.contained import Contained
 
 from zope.location import locate
 
+from zope.location.interfaces import ISublocations
+
 from ZODB.interfaces import IConnection
 
 from nti.base.interfaces import ICreated
-from nti.base.interfaces import ILastModified 
 
 from nti.containers.containers import CaseInsensitiveCheckingLastModifiedBTreeContainer
+
+from nti.dublincore.datastructures import PersistentCreatedModDateTrackingObject
 
 from nti.messaging.interfaces import IMailbox
 from nti.messaging.interfaces import IReceivedMessage
 from nti.messaging.interfaces import IMessageContainer
 from nti.messaging.interfaces import IReceivedMessageContainer
 
-from nti.property.property import Lazy
+from nti.schema.schema import SchemaConfigured
 
 
 def save_in_container(container, key, value, event=True):
@@ -96,41 +95,32 @@ class MessageContainer(MessageContainerBase):
     pass
 
 
-@interface.implementer(IMailbox, ILastModified, ICreated)
-class Mailbox(BTreeContainer, Contained):
+@interface.implementer(IMailbox, ISublocations, ICreated)
+class Mailbox(SchemaConfigured, PersistentCreatedModDateTrackingObject, Contained):
 
     __external_can_create__ = False
     __external_class_name__ = 'Mailbox'
 
     mimeType = mime_type = 'application/vnd.nextthought.messaging.mailbox'
 
-    def __init__(self):
-        super(Mailbox, self).__init__()
-        self.createdTime = time.time()
+    def __init__(self, owner=None):
+        PersistentCreatedModDateTrackingObject.__init__(self)
+        if owner:
+            self.creator = owner
 
-    @Lazy
-    def Sent(self):
-        self._p_changed = True
-        result = MessageContainer()
-        lifecycleevent.created(result)
-        self['Sent'] = result
-        return result
+        self.Sent = MessageContainer()
+        locate(self.Sent, parent=self, name="Sent")
 
-    @Lazy
-    def Received(self):
-        self._p_changed = True
-        result = ReceivedMessageContainer()
-        lifecycleevent.created(result)
-        self['Received'] = result
-        return result
+        self.Received = ReceivedMessageContainer()
+        locate(self.Received, parent=self, name="Received")
 
     @readproperty
     def creator(self):
         return self.__parent__
-    
-    @readproperty
-    def owner(self):
-        return self.creator
+
+    def sublocations(self):
+        yield self.Sent
+        yield self.Received
 
     def send(self, message):
         if not message.creator:
@@ -141,7 +131,10 @@ class Mailbox(BTreeContainer, Contained):
         received_message = IReceivedMessage(message)
         return self.Received.append_message(received_message)
 
-    @property
-    def lastModified(self):
-        return max(self.Sent.lastModified, self.Received.lastModified)
-    last_modified = lastModified
+    def getReceived(self):
+        return self.Received
+    get_received = getReceived
+    
+    def getSent(self):
+        return self.Sent
+    get_sent = getSent
