@@ -7,11 +7,7 @@ entry_points = {
 }
 
 TESTS_REQUIRE = [
-    'fudge',
-    'nose2[coverage_plugin]',
     'nti.testing',
-    'pyhamcrest',
-    'z3c.baseregistry',
     'zope.testrunner',
 ]
 
@@ -20,13 +16,14 @@ def _read(fname):
     with codecs.open(fname, encoding='utf-8') as f:
         return f.read()
 
+
 setup(
     name='nti.messaging',
     version=_read('version.txt').strip(),
     author='Jason Madden',
     author_email='jason@nextthought.com',
     description="NTI Messaging",
-    long_description=_read('README.rst'),
+    long_description=(_read('README.rst')  + '\n\n' + _read('CHANGES.rst')),
     license='Apache',
     keywords='Messaging',
     classifiers=[
@@ -56,8 +53,8 @@ setup(
         'nti.namedfile',
         'nti.property',
         'nti.schema',
-        'nti.zope_catalog',
         'nti.threadable',
+        'nti.zope_catalog',
         'ZODB',
         'zope.annotation',
         'zope.cachedescriptors',
@@ -74,4 +71,5 @@ setup(
         'test': TESTS_REQUIRE,
     },
     entry_points=entry_points,
+    test_suite="nti.messaging.tests",
 )

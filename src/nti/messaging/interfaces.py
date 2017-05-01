@@ -4,7 +4,7 @@
 .. $Id: interfaces.py 106508 2017-02-14 16:36:42Z carlos.sanchez $
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -55,15 +55,15 @@ MSG_STATUS_VOCAB = SimpleVocabulary(
 
 class IMessageBase(interface.Interface):
 
-    Date = Number(title="UTC timestamp for the time the message is sent")
+    Date = Number(title=u"UTC timestamp for the time the message is sent")
 
     From = Object(IPrincipal,
-                  title="Addressable the message is from, author")
+                  title=u"Addressable the message is from, author")
 
-    To = ListOrTuple(title="Recipients",
+    To = ListOrTuple(title=u"Recipients",
                      value_type=Object(IPrincipal))
 
-    Subject = TextLine(title="Subject of the message")
+    Subject = TextLine(title=u"Subject of the message")
 
 
 class IMessage(IMessageBase,
@@ -85,13 +85,13 @@ class IPeerToPeerMessage(IMessage):
 
 class IReceivedMessage(IAttributeAnnotatable):
 
-    ViewDate = Number(title="UTC timestamp when the message was viewed",
+    ViewDate = Number(title=u"UTC timestamp when the message was viewed",
                       required=False)
 
     Message = Object(IMessage,
-                     title="Reference to original message object owned by sender")
+                     title=u"Reference to original message object owned by sender")
 
-    ReplyDate = Number(title="UTC timestamp when the message was replied to",
+    ReplyDate = Number(title=u"UTC timestamp when the message was replied to",
                        required=False)
 
     def mark_viewed(time=None):
@@ -112,7 +112,7 @@ class IReceivedMessageViewedEvent(IObjectEvent):
     Fired when IReceivedMessage is replied to
     """
     ReceivedMessage = Object(IReceivedMessage,
-                             title="The message that was replied to")
+                             title=u"The message that was replied to")
 
 
 class IReceivedMessageRepliedToEvent(IObjectEvent):
@@ -120,7 +120,7 @@ class IReceivedMessageRepliedToEvent(IObjectEvent):
     Fired when IReceivedMessage is replied to
     """
     ReceivedMessage = Object(IReceivedMessage,
-                             title="The message that was replied to")
+                             title=u"The message that was replied to")
 
 
 class IReceivedMessageNotifier(interface.Interface):
@@ -146,7 +146,7 @@ class IOwned(interface.Interface):
     from ICreated['creator'] when, for example, an admin user
     creates something on behalf of a user
     """
-    owner = interface.Attribute("The owner of this object.")
+    owner = interface.Attribute(u"The owner of this object.")
     owner.setTaggedValue('_ext_excluded_out', True)
 
 
@@ -203,11 +203,11 @@ class IReceivedMessageContainer(IContainer):
 class IMailbox(IOwned, IContainer):
 
     Sent = Object(IMessageContainer,
-                  title='Sent messages')
+                  title=u'Sent messages')
     Sent.setTaggedValue('_ext_excluded_out', True)
 
     Received = Object(IReceivedMessageContainer,
-                      title='Received messages')
+                      title=u'Received messages')
     Received.setTaggedValue('_ext_excluded_out', True)
 
     def send(message):

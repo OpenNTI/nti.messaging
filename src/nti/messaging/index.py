@@ -4,7 +4,7 @@
 .. $Id: index.py 106426 2017-02-13 22:00:15Z carlos.sanchez $
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -72,7 +72,7 @@ def get_username(context):
 
 class ValidatingCreator(object):
 
-    __slots__ = (b'creator',)
+    __slots__ = ('creator',)
 
     def __init__(self, obj, default=None):
         if IMessage.providedBy(obj):
@@ -98,7 +98,7 @@ def CreatorIndex(family=None):
 
 class ValidatingMessageReceiver(object):
 
-    __slots__ = (b'receiver',)
+    __slots__ = ('receiver',)
 
     def __init__(self, obj, default=None):
         if IMessage.providedBy(obj):
@@ -117,7 +117,7 @@ class MessageReceiverIndex(AttributeSetIndex):
 
 class ValidatingMessageSender(object):
 
-    __slots__ = (b'sender',)
+    __slots__ = ('sender',)
 
     def __init__(self, obj, default=None):
         if IMessage.providedBy(obj):
@@ -134,7 +134,7 @@ class MessageSenderIndex(AttributeValueIndex):
 
 class ValidatingMessageId(object):
 
-    __slots__ = (b'id',)
+    __slots__ = ('id',)
 
     def __init__(self, obj, default=None):
         if IMessage.providedBy(obj) or IReceivedMessage.providedBy(obj):
