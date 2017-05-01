@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals, absolute_import
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -48,22 +48,22 @@ class TestModel(unittest.TestCase):
 
     def test_interface(self):
         message = Message(body=[u'bleach'],
-                          To=[MockPrincipal('azien@bleach.org')],
-                          From=MockPrincipal('ichigo@bleach.org'),
+                          To=[MockPrincipal(u'azien@bleach.org')],
+                          From=MockPrincipal(u'ichigo@bleach.org'),
                           Subject=u'Bankai')
         assert_that(message, validly_provides(IMessage))
         assert_that(message, verifiably_provides(IMessage))
 
         message = SystemMessage(body=[u'bleach'],
-                                To=[MockPrincipal('azien@bleach.org')],
+                                To=[MockPrincipal(u'azien@bleach.org')],
                                 From=system_user,
                                 Subject=u'Bankai')
         assert_that(message, validly_provides(ISystemMessage))
         assert_that(message, verifiably_provides(ISystemMessage))
 
         message = PeerToPeerMessage(body=[u'bleach'],
-                                    To=[MockPrincipal('azien@bleach.org')],
-                                    From=MockPrincipal('ichigo@bleach.org'),
+                                    To=[MockPrincipal(u'azien@bleach.org')],
+                                    From=MockPrincipal(u'ichigo@bleach.org'),
                                     Subject=u'Bankai')
         assert_that(message, validly_provides(IPeerToPeerMessage))
         assert_that(message, verifiably_provides(IPeerToPeerMessage))

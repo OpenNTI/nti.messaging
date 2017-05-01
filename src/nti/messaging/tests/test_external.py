@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals, absolute_import
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -44,8 +44,8 @@ class TestExternal(unittest.TestCase):
 
     def test_message(self):
         message = PeerToPeerMessage(body=[u'bleach'],
-                                    To=[MockPrincipal('azien@bleach.org')],
-                                    From=MockPrincipal('ichigo@bleach.org'),
+                                    To=[MockPrincipal(u'azien@bleach.org')],
+                                    From=MockPrincipal(u'ichigo@bleach.org'),
                                     Subject=u'Bankai')
         ext_obj = to_external_object(message)
         assert_that(ext_obj,
@@ -53,12 +53,12 @@ class TestExternal(unittest.TestCase):
                                 'From', u'ichigo@bleach.org',
                                 'To', [u'azien@bleach.org'],
                                 'Date', is_not(none()),
-                                'Class', u'PeerToPeerMessage',
+                                'Class', 'PeerToPeerMessage',
                                 'Subject', u'Bankai',
-                                'MimeType', u'application/vnd.nextthought.messaging.peertopeermessage'))
+                                'MimeType', 'application/vnd.nextthought.messaging.peertopeermessage'))
 
         message = SystemMessage(body=[u'bleach'],
-                                To=[MockPrincipal('rukia@bleach.org')],
+                                To=[MockPrincipal(u'rukia@bleach.org')],
                                 From=system_user,
                                 Subject=u'Shikai')
         ext_obj = to_external_object(message)
@@ -67,9 +67,9 @@ class TestExternal(unittest.TestCase):
                                 'From', u'zope.security.management.system_user',
                                 'To', [u'rukia@bleach.org'],
                                 'Date', is_not(none()),
-                                'Class', u'SystemMessage',
+                                'Class', 'SystemMessage',
                                 'Subject', u'Shikai',
-                                'MimeType', u'application/vnd.nextthought.messaging.systemmessage'))
+                                'MimeType', 'application/vnd.nextthought.messaging.systemmessage'))
 
         message = ReceivedMessage(Message=message)
         message.mark_viewed(should_notify=False)
@@ -78,6 +78,6 @@ class TestExternal(unittest.TestCase):
         assert_that(ext_obj,
                     has_entries('ViewDate', is_not(none()),
                                 'ReplyDate', is_not(none()),
-                                'Class', u'ReceivedMessage',
-                                'MimeType', u'application/vnd.nextthought.messaging.receivedmessage',
+                                'Class', 'ReceivedMessage',
+                                'MimeType', 'application/vnd.nextthought.messaging.receivedmessage',
                                 'Message', is_not(none())))

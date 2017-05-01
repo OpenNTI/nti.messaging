@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals, absolute_import
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -55,13 +55,14 @@ class TestStorage(unittest.TestCase):
         assert_that(container, verifiably_provides(IMessageContainer))
 
         container = Mailbox()
+        container.owner = MockPrincipal(u'azien@bleach.org')
         assert_that(container, validly_provides(IMailbox))
         assert_that(container, verifiably_provides(IMailbox))
 
     def test_store(self):
         message = Message(body=[u'bleach'],
-                          To=[MockPrincipal('azien@bleach.org')],
-                          From=MockPrincipal('ichogo@bleach.org'),
+                          To=[MockPrincipal(u'azien@bleach.org')],
+                          From=MockPrincipal(u'ichogo@bleach.org'),
                           Subject=u'Bankai')
         container = MessageContainer()
         container.append_message(message)

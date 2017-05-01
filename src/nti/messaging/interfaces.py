@@ -200,7 +200,7 @@ class IReceivedMessageContainer(IContainer):
     remove = delete = append_message
 
 
-class IMailbox(IOwned, IContainer):
+class IMailbox(IOwned):
 
     Sent = Object(IMessageContainer,
                   title=u'Sent messages')
