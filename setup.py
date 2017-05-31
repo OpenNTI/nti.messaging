@@ -23,7 +23,7 @@ setup(
     author='Jason Madden',
     author_email='jason@nextthought.com',
     description="NTI Messaging",
-    long_description=(_read('README.rst')  + '\n\n' + _read('CHANGES.rst')),
+    long_description=(_read('README.rst') + '\n\n' + _read('CHANGES.rst')),
     license='Apache',
     keywords='Messaging',
     classifiers=[
