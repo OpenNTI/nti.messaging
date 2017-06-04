@@ -212,12 +212,13 @@ def install_messaging_catalog(site_manager_container, intids=None):
     if catalog is not None:
         return catalog
 
-    catalog = MessagingCatalog(family=intids.family)
+    catalog = create_messaging_catalog(family=intids.family)
     locate(catalog, site_manager_container, CATALOG_NAME)
     intids.register(catalog)
-    lsm.registerUtility(catalog, provided=IMetadataCatalog, name=CATALOG_NAME)
+    lsm.registerUtility(catalog, 
+                        provided=IMetadataCatalog, 
+                        name=CATALOG_NAME)
 
-    catalog = create_messaging_catalog(catalog=catalog, family=intids.family)
     for index in catalog.values():
         intids.register(index)
     return catalog
